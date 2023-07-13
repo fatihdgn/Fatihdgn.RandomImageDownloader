@@ -88,12 +88,6 @@ counter.CountIncremented += (sender, count) =>
 
 var loop = Parallel.For(1, options.Count + 1, new ParallelOptions { MaxDegreeOfParallelism = options.Parallelism }, i =>
 {
-    //using var client = new HttpClient();
-    //using var response = client.Get("https://picsum.photos/200/300");
-    //response.EnsureSuccessStatusCode();
-    //using var contentStream = await response.Content.ReadAsStreamAsync();
-    //using var fileStream = File.Create($"{options.SavePath}/{i}.jpg");
-    //contentStream.CopyTo(fileStream);
     if (isCancelled) return;
     using WebClient client = new WebClient();
     client.DownloadFile("https://picsum.photos/200/300", $"{options.SavePath}/{i}.jpg");
