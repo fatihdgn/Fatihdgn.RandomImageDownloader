@@ -11,7 +11,17 @@ if (!string.IsNullOrEmpty(options.InputFile))
 {
     if (!File.Exists(options.InputFile)) throw new ArgumentException("Input file doesn't exists. Please provide a valid file path.");
 
-    var fileOptions = JsonSerializer.Deserialize<CommandLineOptions>(File.ReadAllText(options.InputFile));
+    CommandLineOptions? fileOptions;
+    try
+    {
+        fileOptions = JsonSerializer.Deserialize<CommandLineOptions>(File.ReadAllText(options.InputFile));
+
+    }
+    catch
+    {
+        Console.WriteLine("Input file was not valid. Please provide a valid file.");
+        return;
+    }
     if (fileOptions == null) throw new ArgumentException("Input file was not valid. Please provide a valid file.");
 
     options.Count = fileOptions.Count;
@@ -111,7 +121,7 @@ public class CommandLineOptions
     [Option('p', "parallelism", Required = false, HelpText = "Maximum parallel download limit.")]
     public int Parallelism { get; set; }
 
-    [Option('s', "savepath", Required = false, HelpText = "Path for the output.")]
+    [Option('s', "savepath", Required = false, HelpText = "Path for the output directory.")]
     public string SavePath { get; set; } = string.Empty;
 }
 
